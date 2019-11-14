@@ -1,10 +1,6 @@
-
-
 import java.awt.*;
 import java.util.*;
-
 import javax.swing.*;
-
 import java.awt.event.*;
 
 public class NauEspaial extends javax.swing.JFrame {    
@@ -103,25 +99,21 @@ class PanelNau extends JPanel implements Runnable, KeyListener{
         @Override
         public void keyPressed(KeyEvent e) {
             //System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
-            if (e.getKeyCode()==37) { nauPropia.esquerra();} //System.out.println("a l'esquerra"); }
-            if (e.getKeyCode()==39) { nauPropia.dreta(); } //System.out.println("a la dreta"); }            
-        }
-        
-        public void keyPressedShot(KeyEvent Space) {
-                      
-        }
-
-        public void keyReleased() {
-        	
-        	
-        	
+            if (e.getKeyCode()==37) {
+            	nauPropia.esquerra();
+            	} //System.out.println("a l'esquerra"); }
+            if (e.getKeyCode()==39) {
+            	nauPropia.dreta(); 
+            	} //System.out.println("a la dreta"); }        
+            if (e.getKeyCode()==32){
+            	nauPropia.disparar(getGraphics());
+            }
+            
         }
 
-		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
 }
    
        
@@ -135,6 +127,7 @@ class Nau extends Thread {
 
     private String img = "/images/nau.jpg";
     private Image image;
+    private Image image2;
 
     public Nau(String nomNau, int x, int y, int dsx, int dsy, int v ) {
         this.nomNau = nomNau;
@@ -144,6 +137,7 @@ class Nau extends Thread {
         this.dsy=dsy;
         this.v=v;
         image = new ImageIcon(Nau.class.getResource("nau.png")).getImage();
+        image2 = new ImageIcon(Nau.class.getResource("doramio.png")).getImage();
         Thread t = new Thread(this); 
         t.start();
         }
@@ -159,11 +153,12 @@ class Nau extends Thread {
         if ( x>= 450 - tx || x<= tx) dsx = - dsx;
         if ( y >= 500 - ty || y<=ty ) dsy = - dsy;
         }
+    
     public void pinta (Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(this.image, x, y, null);
         }
-    
+     
 
     public void run() {
         while (true) { 
@@ -180,6 +175,21 @@ class Nau extends Thread {
     public void dreta() {
         this.dsx = 10; 
         }
+    
+    public void disparar(Graphics g){
+    	
+    	Nau disparo = new Nau("nau.png", this.x, this.y, this.dsx, this.dsy, this.v );
+    	
+    	for (int i = 0; i < 500; i++) {
+    		
+    		Graphics2D g2d = (Graphics2D)g;
+        	g2d.drawImage(this.image2, this.x , this.y - i, null);
+        	disparo.pinta(g2d);;
+        	
+		}
+    	
+    	
+   
     }
-
-
+    
+    }
