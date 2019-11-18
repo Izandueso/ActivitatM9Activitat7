@@ -47,7 +47,7 @@ public class NauEspaial extends javax.swing.JFrame {
 	}
 }
 class PanelNau extends JPanel implements Runnable, KeyListener{   
-	private int numNaus=3; 
+	private int numNaus=10; 
 	Nau[] nau;
 	Nau nauPropia;
 	Disparar disparo;
@@ -95,12 +95,20 @@ class PanelNau extends JPanel implements Runnable, KeyListener{
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
-		for(int i=0; i<nau.length;++i) nau[i].pinta(g);
+		for(int i=0; i<nau.length;++i) {
+			nau[i].pinta(g);
+			if (disparo.getY() == nau[i].getY() && disparo.getX() == nau[i].getX()) {
+				nau[i].noSeguir();
+				nau[i] = null;
+				
+			}	
+		}
+		
 		nauPropia.pinta(g);
 		
 		if (disparo != null){
 			disparo.pinta(g);
-			if (disparo.getYY() > 560 || disparo.getYY() < 0){
+			if (disparo.getY() > 560 || disparo.getY() < 0){
 				disparo.noSeguir();
 				disparo = null;
 				if (disparo == null){
@@ -110,7 +118,6 @@ class PanelNau extends JPanel implements Runnable, KeyListener{
 		}
 		
 	}
-
 
 	// Metodes necesaris per gestionar esdeveniments del teclat
 	@Override
@@ -313,11 +320,11 @@ class Disparar extends Thread {
 		parar = true;
 	}
 	
-	public int getYY(){
+	public int getY(){
 		return this.y;
 	}
 	
-	public int getXX(){
+	public int getX(){
 		return this.x;
 	}
 
